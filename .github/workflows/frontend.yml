@@ -16,7 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: cd frontend
+      with:
+        path: frontend
     - name: Use Node.js 14.x
       uses: actions/setup-node@v2
       with:
