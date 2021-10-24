@@ -16,18 +16,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      with:
-        path: frontend
     - name: Use Node.js 14.x
       uses: actions/setup-node@v2
       with:
         node-version: 14.x
         cache: 'yarn'
+        cache-dependency-path: ./frontend
     - run: yarn build
+      working-directory: ./frontend
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.5.0
       with:
-        build_dir: build
+        build_dir: ./frontend/build
         commit_message: Update gh-pages
         dry_run: true
         verbose: true
