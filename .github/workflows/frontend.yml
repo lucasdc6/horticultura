@@ -26,14 +26,11 @@ jobs:
       working-directory: ./frontend
       run: |
         yarn
-        yarn deploy --no-push
+        yarn build
     - name: GitHub Pages
-      uses: crazy-max/ghaction-github-pages@v2.5.0
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        build_dir: ./frontend/build
-        commit_message: Update gh-pages
-        dry_run: false
-        verbose: true
+        publish_dir: ./frontend/build
+        github_token: ${{ secrets.GITHUB_TOKEN }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
