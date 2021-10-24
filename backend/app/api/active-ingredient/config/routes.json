@@ -1,0 +1,60 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/active-ingredients",
+      "handler": "active-ingredient.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/active-ingredients/count",
+      "handler": "active-ingredient.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/active-ingredients/:id",
+      "handler": "active-ingredient.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/active-ingredients",
+      "handler": "active-ingredient.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/active-ingredients/:id",
+      "handler": "active-ingredient.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/active-ingredients/:id",
+      "handler": "active-ingredient.delete",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/active-ingredients/uploadfile",
+      "handler": "active-ingredient.uploadFile",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

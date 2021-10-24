@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/residual-limits",
+      "handler": "residual-limit.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/residual-limits/count",
+      "handler": "residual-limit.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/residual-limits/:id",
+      "handler": "residual-limit.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/residual-limits",
+      "handler": "residual-limit.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/residual-limits/:id",
+      "handler": "residual-limit.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/residual-limits/:id",
+      "handler": "residual-limit.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

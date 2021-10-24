@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "active_ingredients",
+  "info": {
+    "name": "Active Ingredient"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "minLength": 1
+    }
+  }
+}

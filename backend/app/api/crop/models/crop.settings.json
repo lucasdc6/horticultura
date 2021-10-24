@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "crops",
+  "info": {
+    "name": "Crop"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "unique": true,
+      "minLength": 1
+    }
+  }
+}

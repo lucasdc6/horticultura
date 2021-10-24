@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/aptitudes",
+      "handler": "aptitude.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/aptitudes/count",
+      "handler": "aptitude.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/aptitudes/:id",
+      "handler": "aptitude.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/aptitudes",
+      "handler": "aptitude.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/aptitudes/:id",
+      "handler": "aptitude.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/aptitudes/:id",
+      "handler": "aptitude.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

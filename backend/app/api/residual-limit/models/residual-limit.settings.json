@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "residual_limits",
+  "info": {
+    "name": "Residual Limit"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "active_ingredient": {
+      "model": "active-ingredient"
+    },
+    "aptitude": {
+      "model": "aptitude"
+    },
+    "crop": {
+      "model": "crop"
+    },
+    "residual": {
+      "type": "decimal"
+    },
+    "harvest": {
+      "type": "boolean"
+    }
+  }
+}
