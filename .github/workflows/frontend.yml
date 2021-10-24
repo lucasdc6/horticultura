@@ -32,5 +32,5 @@ jobs:
       with:
         build_dir: ./frontend/build
         commit_message: Update gh-pages
-        dry_run: true
+        dry_run: false
         verbose: true
