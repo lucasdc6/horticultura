@@ -22,8 +22,11 @@ jobs:
         node-version: 14.x
         cache: 'yarn'
         cache-dependency-path: ./frontend
-    - run: yarn build
+    - name: Setup and build
       working-directory: ./frontend
+      run: |
+        yarn
+        yarn build
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.5.0
       with:
