@@ -26,7 +26,7 @@ jobs:
       working-directory: ./frontend
       run: |
         yarn
-        yarn build
+        yarn deploy --no-push
     - name: GitHub Pages
       uses: crazy-max/ghaction-github-pages@v2.5.0
       with:
@@ -36,3 +36,4 @@ jobs:
         verbose: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
