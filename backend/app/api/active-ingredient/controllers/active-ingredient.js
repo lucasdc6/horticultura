@@ -5,10 +5,4 @@
  * to customize this controller
  */
 
-module.exports = {
-  async uploadFile(ctx) {
-    const { request: { body, files } } = ctx;
-    console.log(body, files.file);
-    return 'Hello World!';
-  }
-};
+module.exports = {};
