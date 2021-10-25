@@ -24,4 +24,4 @@ jobs:
         heroku_email: "${{ secrets.HEROKU_EMAIL }}"
         heroku_app_name: "${{ secrets.HEROKU_APP_NAME }}"
         dynamicFiles: false
-        buildpacks: "['https://github.com/timanovsky/subdir-heroku-buildpack', 'https://github.com/heroku/heroku-buildpack-nodejs.git']"
+        buildpacks: "['https://github.com/timanovsky/subdir-heroku-buildpack','https://github.com/heroku/heroku-buildpack-nodejs.git']"
