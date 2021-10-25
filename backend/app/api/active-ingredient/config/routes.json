@@ -47,14 +47,6 @@
       "config": {
         "policies": []
       }
-    },
-    {
-      "method": "POST",
-      "path": "/active-ingredients/uploadfile",
-      "handler": "active-ingredient.uploadFile",
-      "config": {
-        "policies": []
-      }
     }
   ]
 }
