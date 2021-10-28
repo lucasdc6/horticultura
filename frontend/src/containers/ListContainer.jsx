@@ -18,6 +18,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import useFetch from 'use-http';
 
 import ResidualLimitFormComponent from '../components/ResidualLimitFormComponent';
+import ResourceAlerts from '../components/ResourceAlerts';
 
 const mapRows = (elem) => ({
   id: elem.id,
@@ -42,19 +43,21 @@ export const ListContainer = () => {
 
   // Fetch objects
   const {
+    error: residualLimitError,
+    response: residualLimitResponse,
     post: residualLimitPost,
     put: residualLimitPut,
     del: residualLimitDelete,
-    response: residualLimitResponse,
   } = useFetch('/residual-limits', { data: {}});
   const {
+    error: residualLimitListError,
+    response: residualLimitListResponse,
     data: residualLimitList,
     loading: residualLimitLoading,
   } = useFetch('/residual-limits', fetchOptions, [residualLimitResponse.data]);
-  // Updates all of this on modal open or close
-  const { data: activeIngredientList, loading: activeIngredientsLoading } = useFetch('/active-ingredients', fetchOptions, [open]);
-  const { data: aptitudeList, loading: aptitudesLoading } = useFetch('/aptitudes', fetchOptions, [open]);
-  const { data: cropList, loading: cropsLoading } = useFetch('/crops', fetchOptions, [open]);
+  const { error: activeIngredientError, response: activeIngredientResponse, data: activeIngredientList, loading: activeIngredientsLoading } = useFetch('/active-ingredients', fetchOptions, [open]);
+  const { error: aptitudeError, response: aptitudeResponse, data: aptitudeList, loading: aptitudesLoading } = useFetch('/aptitudes', fetchOptions, [open]);
+  const { error: cropError, response: cropResponse, data: cropList, loading: cropsLoading } = useFetch('/crops', fetchOptions, [open]);
 
   // Visual
   const CustomToolbar = () => {
@@ -89,7 +92,7 @@ export const ListContainer = () => {
       flex: 3,
       editable: true,
       type: 'singleSelect',
-      valueOptions: activeIngredientList.map((elem) => elem.name),
+      valueOptions: activeIngredientResponse.ok ? activeIngredientList.map((elem) => elem.name) : [],
       sortable: false,
     },
     {
@@ -98,7 +101,7 @@ export const ListContainer = () => {
       flex: 2,
       editable: true,
       type: 'singleSelect',
-      valueOptions: aptitudeList.map((elem) => elem.name),
+      valueOptions: aptitudeResponse.ok ? aptitudeList.map((elem) => elem.name) : [],
       sortable: false,
     },
     {
@@ -107,7 +110,7 @@ export const ListContainer = () => {
       flex: 1,
       editable: true,
       type: 'singleSelect',
-      valueOptions: cropList.map((elem) => elem.name),
+      valueOptions: cropResponse.ok ? cropList.map((elem) => elem.name) : [],
       sortable: false,
     },
     {
@@ -144,10 +147,31 @@ export const ListContainer = () => {
     residualLimitPut(`${params.row.id}`, residualLimitBody);
   }, [residualLimitPut, activeIngredientList, aptitudeList, cropList]);
 
-
   return (
     <Container maxWidth="xl">
-      <Box sx={{ height: 750, width: '100%' }}>
+      <Box sx={{ height: 700, width: '100%' }}>
+        <ResourceAlerts
+          residualLimit={{
+            error: residualLimitError,
+            response: residualLimitResponse,
+          }}
+          residualLimitList={{
+            error: residualLimitListError,
+            response: residualLimitListResponse,
+          }}
+          activeIngredient={{
+            error: activeIngredientError,
+            response: activeIngredientResponse,
+          }}
+          aptitude={{
+            error: aptitudeError,
+            response: aptitudeResponse,
+          }}
+          crop={{
+            error: cropError,
+            response: cropResponse,
+          }}
+        />
         <Modal
           open={open}
           onClose={() => setOpen(false)}
@@ -171,7 +195,7 @@ export const ListContainer = () => {
           components={{
             Toolbar: CustomToolbar,
           }}
-          rows={residualLimitList.map(mapRows)}
+          rows={residualLimitListResponse.ok ? residualLimitList.map(mapRows) : []}
           columns={columns}
           checkboxSelection
           editMode="row"

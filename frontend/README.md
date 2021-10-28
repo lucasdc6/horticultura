@@ -188,6 +188,13 @@ mínima esperada para el funcionamiento correcto del sistema.
       ...
     }
     ```
+#### Swagger de ejemplo
+
+A modo orientativo, se puede consultar el swagger del backend de strapi de
+testing, en el que se van a encontrar las definiciones de las APIs usadas para
+el desarrollo de este forntend.
+https://horticultura.herokuapp.com/documentation/v1.0.0
+
 
 ### Uso de strapi
 
