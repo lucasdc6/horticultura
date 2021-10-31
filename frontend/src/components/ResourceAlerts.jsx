@@ -5,19 +5,11 @@ import {
 } from '@mui/material';
 import httpStatusToMessage from '../helpers/httpStatus';
 
-export const ResourceAlerts = ({
-  residualLimit,
-  residualLimitList,
-  activeIngredient,
-  aptitude,
-  crop,
-}) => {
-  if (!residualLimitList.error &&
-      !residualLimit.error &&
-      !activeIngredient.error &&
-      !aptitude.error &&
-      !crop.error
-  ) {
+export const ResourceAlerts = ({ data }) => {
+  const hasntError = data.reduce((acc, elem) => (
+    acc && elem.error
+  ));
+  if (!hasntError) {
     return null;
   }
 
@@ -26,39 +18,13 @@ export const ResourceAlerts = ({
       <AlertTitle>Algo salió mal</AlertTitle>
       <ul>
         {
-          residualLimit.error && (
-            <li>
-              <b>Operaciones con residuos límite:</b> { httpStatusToMessage(residualLimit.response.status) }
-            </li>
-          )
-        }
-        {
-          residualLimitList.error && (
-            <li>
-              <b>Residuos límite:</b> { httpStatusToMessage(residualLimitList.response.status) }
-            </li>
-          )
-        }
-        {
-          activeIngredient.error && (
-            <li>
-              <b>Ingredientes activos:</b> { httpStatusToMessage(activeIngredient.response.status) }
-            </li>
-          )
-        }
-        {
-          aptitude.error && (
-            <li>
-              <b>Aptitudes:</b> { httpStatusToMessage(aptitude.response.status) }
-            </li>
-          )
-        }
-        {
-          crop.error && (
-            <li>
-              <b>Cultivos:</b> { httpStatusToMessage(crop.response.status) }
-            </li>
-          )
+          data.map((elem) => (
+            elem.error && (
+              <li>
+                <b>{elem.msg}</b> { httpStatusToMessage(elem.response.status) }
+              </li>
+            )
+          ))
         }
       </ul>
     </Alert>

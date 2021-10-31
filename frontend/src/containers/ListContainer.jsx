@@ -4,6 +4,10 @@ import {
   Modal,
   Container,
   Button,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
 } from '@mui/material';
 import {
   DataGrid,
@@ -50,11 +54,13 @@ export const ListContainer = () => {
     del: residualLimitDelete,
   } = useFetch('/residual-limits', { data: {}});
   const {
-    error: residualLimitListError,
-    response: residualLimitListResponse,
-    data: residualLimitList,
-    loading: residualLimitLoading,
-  } = useFetch('/residual-limits', fetchOptions, [residualLimitResponse.data]);
+    error: datasetError,
+    response: datasetResponse,
+    get: datasetGet,
+    put: datasetPut,
+  } = useFetch('/datasets', { cachePolicy: 'no-cache', data: {}});
+
+  const { error: datasetsError, response: datasetsResponse, data: datasetList, loading: datasetsLoading } = useFetch('/datasets', fetchOptions, []);
   const { error: activeIngredientError, response: activeIngredientResponse, data: activeIngredientList, loading: activeIngredientsLoading } = useFetch('/active-ingredients', fetchOptions, [open]);
   const { error: aptitudeError, response: aptitudeResponse, data: aptitudeList, loading: aptitudesLoading } = useFetch('/aptitudes', fetchOptions, [open]);
   const { error: cropError, response: cropResponse, data: cropList, loading: cropsLoading } = useFetch('/crops', fetchOptions, [open]);
@@ -63,11 +69,14 @@ export const ListContainer = () => {
   const CustomToolbar = () => {
     return (
       <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} onClick={() => setOpen(true)}>
+        <Button color="primary" startIcon={<AddIcon />} disabled={!Object.entries(datasetResponse.data).length} onClick={() => setOpen(true)}>
           Agregar
         </Button>
         <Button color="primary" startIcon={<DeleteIcon />} disabled={!selected.length} onClick={() => {
-          selected.forEach((e) => residualLimitDelete(`${e}`));
+          const requests = selected.map((e) => residualLimitDelete(`${e}`));
+          Promise.all(requests).then(() => {
+            datasetGet(`${datasetResponse.data.id}`);
+          });
         }}>
           Eliminar
         </Button>
@@ -76,7 +85,7 @@ export const ListContainer = () => {
         <GridToolbarExport />
       </GridToolbarContainer>
     );
-  }
+  };
   const columns = [
     {
       field: 'id',
@@ -144,34 +153,69 @@ export const ListContainer = () => {
       harvest: `${params.row.harvest}`,
     };
 
-    residualLimitPut(`${params.row.id}`, residualLimitBody);
-  }, [residualLimitPut, activeIngredientList, aptitudeList, cropList]);
+    residualLimitPut(`${params.row.id}`, residualLimitBody).then(() => {
+      datasetGet(`${datasetResponse.data.id}`);
+    });
+  }, [datasetGet, datasetResponse.data, residualLimitPut, activeIngredientList, aptitudeList, cropList]);
+
+  const handleChange = (event) => {
+    const datasetID = event.target.value;
+    datasetGet(`${datasetID}`);
+  };
 
   return (
     <Container maxWidth="xl">
       <Box sx={{ height: 700, width: '100%' }}>
         <ResourceAlerts
-          residualLimit={{
-            error: residualLimitError,
-            response: residualLimitResponse,
-          }}
-          residualLimitList={{
-            error: residualLimitListError,
-            response: residualLimitListResponse,
-          }}
-          activeIngredient={{
-            error: activeIngredientError,
-            response: activeIngredientResponse,
-          }}
-          aptitude={{
-            error: aptitudeError,
-            response: aptitudeResponse,
-          }}
-          crop={{
-            error: cropError,
-            response: cropResponse,
-          }}
+          data={[
+            'dataset': {
+              msg: "Operaciones con datasets: ",
+              error: datasetError,
+              response: datasetResponse,
+            },
+            'residualLimit': {
+              msg: "Operaciones con residuos límite: ",
+              error: residualLimitError,
+              response: residualLimitResponse,
+            'datasets': {
+              msg: "Datasets: ",
+              error: datasetsError,
+              response: datasetsResponse,
+            },
+            },
+            'activeIngredient': {
+              msg: "Ingredientes activos: ",
+              error: activeIngredientError,
+              response: activeIngredientResponse,
+            },
+            'aptitude': {
+              msg: "Aptiudes: ",
+              error: aptitudeError,
+              response: aptitudeResponse,
+            },
+            'crop': {
+              msg: "Cultivos: ",
+              error: cropError,
+              response: cropResponse,
+            },
+          ]}
         />
+        <FormControl style={{ marginTop: "1em", marginBottom: "1em"}} fullWidth>
+          <InputLabel id="dataset-label">Dataset</InputLabel>
+          <Select
+            labelId="dataset-label"
+            id="dataset-select"
+            value={datasetResponse.ok ? datasetResponse.data.id : ''}
+            label="Dataset"
+            onChange={handleChange}
+          >
+            {
+              datasetList.map((dataset) => (
+                <MenuItem value={dataset.id} key={dataset.id}>{dataset.title}</MenuItem>
+              ))
+            }
+          </Select>
+        </FormControl>
         <Modal
           open={open}
           onClose={() => setOpen(false)}
@@ -188,6 +232,8 @@ export const ListContainer = () => {
               cropList={cropList}
               cropsLoading={cropsLoading}
               residualLimitPost={residualLimitPost}
+              dataset={datasetResponse.data}
+              datasetPut={datasetPut}
             />
           </>
         </Modal>
@@ -195,11 +241,11 @@ export const ListContainer = () => {
           components={{
             Toolbar: CustomToolbar,
           }}
-          rows={residualLimitListResponse.ok ? residualLimitList.map(mapRows) : []}
+          rows={datasetResponse.ok ? datasetResponse.data.residual_limits.map(mapRows) : []}
           columns={columns}
           checkboxSelection
           editMode="row"
-          loading={residualLimitLoading}
+          loading={datasetsLoading}
           onRowEditStop={handleEdit}
           onSelectionModelChange={(e) => setSelected(e)}
           sortModel={[{

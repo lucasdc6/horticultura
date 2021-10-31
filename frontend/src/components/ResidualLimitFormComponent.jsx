@@ -35,6 +35,8 @@ export const ResidualLimitFormComponent = forwardRef(({
   cropsLoading,
   residualLimitPost,
   residualLimitGet,
+  dataset,
+  datasetPut,
 }, ref) => {
   // State
   const [ activeIngredient, setActiveIngredient ] = useState(null);
@@ -68,7 +70,10 @@ export const ResidualLimitFormComponent = forwardRef(({
       residual: `${residual}`,
       harvest: `${harvest}`,
     };
-    residualLimitPost(residualLimit)
+    residualLimitPost(residualLimit).then(({ id }) => {
+      const residualLimitIds = dataset.residual_limits.map((elem) => elem.id);
+      datasetPut(`${dataset.id}`, { residual_limits: [ ...residualLimitIds, id] });
+    });
     closeModal();
   }, [residualLimitPost, activeIngredient, aptitude, crop, residual, harvest, closeModal]);
 
