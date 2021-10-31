@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "datasets",
+  "info": {
+    "name": "Dataset",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "author": {
+      "plugin": "admin",
+      "model": "user"
+    },
+    "residual_limits": {
+      "columnName": "residualLimits",
+      "collection": "residual-limit"
+    },
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}
