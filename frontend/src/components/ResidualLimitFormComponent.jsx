@@ -75,7 +75,7 @@ export const ResidualLimitFormComponent = forwardRef(({
       datasetPut(`${dataset.id}`, { residual_limits: [ ...residualLimitIds, id] });
     });
     closeModal();
-  }, [residualLimitPost, activeIngredient, aptitude, crop, residual, harvest, closeModal]);
+  }, [dataset, datasetPut, residualLimitPost, activeIngredient, aptitude, crop, residual, harvest, closeModal]);
 
   return (
     <Box
