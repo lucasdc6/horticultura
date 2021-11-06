@@ -6,10 +6,12 @@ import {
 import httpStatusToMessage from '../helpers/httpStatus';
 
 export const ResourceAlerts = ({ data }) => {
-  const hasntError = data.reduce((acc, elem) => (
-    acc && elem.error
-  ));
-  if (!hasntError) {
+  // Check for errors
+  const hasError = data.reduce((acc, elem) => (
+    acc || elem.error
+  ), false);
+
+  if (!hasError) {
     return null;
   }
 

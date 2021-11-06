@@ -15,7 +15,7 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Provider url={process.env.REACT_APP_BASE_URL}>
+      <Provider url={process.env.REACT_APP_API_URL}>
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>

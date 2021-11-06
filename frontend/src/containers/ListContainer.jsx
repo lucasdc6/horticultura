@@ -7,7 +7,7 @@ import {
   MenuItem,
   Select,
   InputLabel,
-  FormControl,
+  Tooltip,
 } from '@mui/material';
 import {
   DataGrid,
@@ -18,10 +18,12 @@ import {
   esES,
 } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
+import InfoIcon from '@mui/icons-material/Info';
 import DeleteIcon from '@mui/icons-material/Delete';
 import useFetch from 'use-http';
 
 import ResidualLimitFormComponent from '../components/ResidualLimitFormComponent';
+import DatasetComponent from '../components/DatasetComponent';
 import ResourceAlerts from '../components/ResourceAlerts';
 
 const mapRows = (elem) => ({
@@ -35,7 +37,7 @@ const mapRows = (elem) => ({
 
 export const ListContainer = () => {
   // State
-  const [ open, setOpen ] = useState(false);
+  const [ open, setOpen ] = useState('');
   const [ selected, setSelected ] = useState([]);
 
   // Fetch options
@@ -56,11 +58,12 @@ export const ListContainer = () => {
   const {
     error: datasetError,
     response: datasetResponse,
+    post: datasetPost,
     get: datasetGet,
     put: datasetPut,
   } = useFetch('/datasets', { cachePolicy: 'no-cache', data: {}});
 
-  const { error: datasetsError, response: datasetsResponse, data: datasetList, loading: datasetsLoading } = useFetch('/datasets', fetchOptions, []);
+  const { error: datasetsError, response: datasetsResponse, data: datasetList, loading: datasetsLoading } = useFetch('/datasets', fetchOptions, [datasetResponse.data]);
   const { error: activeIngredientError, response: activeIngredientResponse, data: activeIngredientList, loading: activeIngredientsLoading } = useFetch('/active-ingredients', fetchOptions, [open]);
   const { error: aptitudeError, response: aptitudeResponse, data: aptitudeList, loading: aptitudesLoading } = useFetch('/aptitudes', fetchOptions, [open]);
   const { error: cropError, response: cropResponse, data: cropList, loading: cropsLoading } = useFetch('/crops', fetchOptions, [open]);
@@ -69,7 +72,7 @@ export const ListContainer = () => {
   const CustomToolbar = () => {
     return (
       <GridToolbarContainer>
-        <Button color="primary" startIcon={<AddIcon />} disabled={!Object.entries(datasetResponse.data).length} onClick={() => setOpen(true)}>
+        <Button color="primary" startIcon={<AddIcon />} disabled={!Object.entries(datasetResponse.data).length} onClick={() => setOpen('residualLimit')}>
           Agregar
         </Button>
         <Button color="primary" startIcon={<DeleteIcon />} disabled={!selected.length} onClick={() => {
@@ -165,44 +168,58 @@ export const ListContainer = () => {
 
   return (
     <Container maxWidth="xl">
-      <Box sx={{ height: 700, width: '100%' }}>
+      <Box sx={{ height: 600, width: '100%' }}>
         <ResourceAlerts
           data={[
-            'dataset': {
+            {
               msg: "Operaciones con datasets: ",
               error: datasetError,
               response: datasetResponse,
             },
-            'residualLimit': {
+            {
               msg: "Operaciones con residuos límite: ",
               error: residualLimitError,
               response: residualLimitResponse,
-            'datasets': {
+            },
+            {
               msg: "Datasets: ",
               error: datasetsError,
               response: datasetsResponse,
             },
-            },
-            'activeIngredient': {
+            {
               msg: "Ingredientes activos: ",
               error: activeIngredientError,
               response: activeIngredientResponse,
             },
-            'aptitude': {
+            {
               msg: "Aptiudes: ",
               error: aptitudeError,
               response: aptitudeResponse,
             },
-            'crop': {
+            {
               msg: "Cultivos: ",
               error: cropError,
               response: cropResponse,
             },
           ]}
         />
-        <FormControl style={{ marginTop: "1em", marginBottom: "1em"}} fullWidth>
-          <InputLabel id="dataset-label">Dataset</InputLabel>
+        <Box
+          style={{ marginTop: "1em", marginBottom: "1em"}}
+        >
+          <InputLabel id="dataset-label">
+            Dataset
+            {
+              datasetResponse.ok && datasetResponse.data.description && (
+                <Tooltip title={datasetResponse.data.description} placement="right">
+                  <sup>
+                    <InfoIcon sx={{ fontSize: 15 }}/>
+                  </sup>
+                </Tooltip>
+              )
+            }
+          </InputLabel>
           <Select
+            style={{ width: '20em' }}
             labelId="dataset-label"
             id="dataset-select"
             value={datasetResponse.ok ? datasetResponse.data.id : ''}
@@ -210,31 +227,46 @@ export const ListContainer = () => {
             onChange={handleChange}
           >
             {
-              datasetList.map((dataset) => (
+              datasetsResponse.ok && datasetList.map((dataset) => (
                 <MenuItem value={dataset.id} key={dataset.id}>{dataset.title}</MenuItem>
               ))
             }
           </Select>
-        </FormControl>
+          <Button color="primary" startIcon={<AddIcon />} onClick={() => setOpen('dataset')}>
+            Agregar dataset
+          </Button>
+        </Box>
         <Modal
-          open={open}
-          onClose={() => setOpen(false)}
+          open={Boolean(open)}
+          onClose={() => setOpen('')}
           aria-labelledby="add-residual-limit"
           aria-describedby="add-residual-limit-form"
         >
           <>
-            <ResidualLimitFormComponent
-              closeModal={() => setOpen(false)}
-              activeIngredientList={activeIngredientList}
-              activeIngredientsLoading={activeIngredientsLoading}
-              aptitudeList={aptitudeList}
-              aptitudesLoading={aptitudesLoading}
-              cropList={cropList}
-              cropsLoading={cropsLoading}
-              residualLimitPost={residualLimitPost}
-              dataset={datasetResponse.data}
-              datasetPut={datasetPut}
-            />
+            {
+              open === 'residualLimit' && (
+                <ResidualLimitFormComponent
+                  closeModal={() => setOpen('')}
+                  activeIngredientList={activeIngredientList}
+                  activeIngredientsLoading={activeIngredientsLoading}
+                  aptitudeList={aptitudeList}
+                  aptitudesLoading={aptitudesLoading}
+                  cropList={cropList}
+                  cropsLoading={cropsLoading}
+                  residualLimitPost={residualLimitPost}
+                  dataset={datasetResponse.data}
+                  datasetPut={datasetPut}
+                />
+              )
+            }
+            {
+              open === 'dataset' && (
+                <DatasetComponent
+                  closeModal={() => setOpen('')}
+                  datasetPost={datasetPost}
+                />
+              )
+            }
           </>
         </Modal>
         <DataGrid
