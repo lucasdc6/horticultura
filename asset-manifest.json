@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/horticultura/static/js/main.daccce4f.chunk.js",
-    "main.js.map": "/horticultura/static/js/main.daccce4f.chunk.js.map",
+    "main.js": "/horticultura/static/js/main.ae78af2a.chunk.js",
+    "main.js.map": "/horticultura/static/js/main.ae78af2a.chunk.js.map",
     "runtime-main.js": "/horticultura/static/js/runtime-main.f2b9ee10.js",
     "runtime-main.js.map": "/horticultura/static/js/runtime-main.f2b9ee10.js.map",
-    "static/js/2.99b96be3.chunk.js": "/horticultura/static/js/2.99b96be3.chunk.js",
-    "static/js/2.99b96be3.chunk.js.map": "/horticultura/static/js/2.99b96be3.chunk.js.map",
+    "static/js/2.85e5202f.chunk.js": "/horticultura/static/js/2.85e5202f.chunk.js",
+    "static/js/2.85e5202f.chunk.js.map": "/horticultura/static/js/2.85e5202f.chunk.js.map",
     "index.html": "/horticultura/index.html",
-    "static/js/2.99b96be3.chunk.js.LICENSE.txt": "/horticultura/static/js/2.99b96be3.chunk.js.LICENSE.txt"
+    "static/js/2.85e5202f.chunk.js.LICENSE.txt": "/horticultura/static/js/2.85e5202f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.f2b9ee10.js",
-    "static/js/2.99b96be3.chunk.js",
-    "static/js/main.daccce4f.chunk.js"
+    "static/js/2.85e5202f.chunk.js",
+    "static/js/main.ae78af2a.chunk.js"
   ]
 }
