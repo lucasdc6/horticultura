@@ -19,7 +19,7 @@ backend
 Se encarga de construir el fontend y dejarlo disponible en las pages del
 repositorio. Para su funcionamiento, hace falta configurar lo siguientes secrets
 
-- `REACT_APP_BASE_URL`: url del backend
+- `REACT_APP_API_URL`: url del backend
 
 Para más información del workflow, se puede consultar el archivo `.github/workflows/frontend.yml`
 
